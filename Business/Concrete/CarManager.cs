@@ -9,25 +9,32 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ICarManager : ICarService
+    public class CarManager : ICarService
     {
         //Apply Dependency Injection -- dont't use NEW keyword 
 
         ICarDal _carDal;
 
-        public ICarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
         }
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.DailyPrice > 0 && car.Description.Length > 2)
+            {
+                _carDal.Add(car);
+            }
+            else
+            {
+                Console.WriteLine("Araba günlük fiyatı 0'dan büyük olmalıdır ve ismi en az 2 karakter olmalıdır");
+            }
         }
 
         public void Delete(Car car)
         {
-           _carDal.Delete(car);
+            _carDal.Delete(car);
         }
 
         public List<Car> GetAll()
@@ -37,7 +44,7 @@ namespace Business.Concrete
 
         public Car GetById(int id)
         {
-            return _carDal.GetById(id);
+            return _carDal.Get(c => c.Id == id);
         }
 
         public void Update(Car car)
