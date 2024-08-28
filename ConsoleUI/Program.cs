@@ -11,6 +11,13 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
+            //CarTest();
+            //ColorTest();
+            //BrandTest();
+        }
+
+        private static void CarTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
 
             Console.WriteLine("List of cars:");
@@ -22,12 +29,11 @@ namespace MyApp
             // Add New Car
             Car newCar = new Car
             {
-                Id = 11,
                 BrandId = 3,
                 ColorId = 2,
                 ModelYear = 2022,
                 DailyPrice = 500,
-                Description = "New Mercedes-Benz E-Class"
+                Description = "New Mercedes-Benz C-Class"
             };
 
             carManager.Add(newCar);
@@ -39,9 +45,9 @@ namespace MyApp
             }
 
             // Update a car
-            Car carToUpdate = carManager.GetById(1);
+            Car carToUpdate = carManager.GetById(10);
 
-            carToUpdate.Description = "Updated Audi A4";
+            carToUpdate.Description = "Updated Audi A2";
             carToUpdate.DailyPrice = 275;
             carManager.Update(carToUpdate);
             Console.WriteLine("\nUpdated the first car:");
@@ -52,7 +58,7 @@ namespace MyApp
             }
 
             // Delete a car
-            carManager.Delete(carManager.GetById(2));
+            carManager.Delete(carManager.GetById(10));
             Console.WriteLine("\nDeleted the second car:");
 
             foreach (var car in carManager.GetAll())
@@ -60,5 +66,90 @@ namespace MyApp
                 Console.WriteLine($"{car.Id} - {car.Description}, Model Year: {car.ModelYear}, Price: {car.DailyPrice}");
             }
         }
+        private static void ColorTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+
+            Console.WriteLine("List of colors:");
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine($"{color.Id} - {color.Name}");
+            }
+
+            // Add New Color
+            Color newColor = new Color
+            {
+                Name = "Crimson Red"
+            };
+
+            colorManager.Add(newColor);
+            Console.WriteLine("\nAdded a new color:");
+
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine($"{color.Id} - {color.Name}");
+            }
+
+            // Update a color
+            Color colorToUpdate = colorManager.GetById(2);
+
+            colorToUpdate.Name = "Deep Blue";
+            colorManager.Update(colorToUpdate);
+            Console.WriteLine("\nUpdated a color:");
+
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine($"{color.Id} - {color.Name}");
+            }
+
+            // Delete a color
+            colorManager.Delete(colorManager.GetById(3));
+            Console.WriteLine("\nDeleted a color:");
+
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine($"{color.Id} - {color.Name}");
+            }
+        }
+        private static void BrandTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            Console.WriteLine("List of brands:");
+            foreach (var brand in brandManager.GetAll())
+            {
+                Console.WriteLine($"{brand.Id} - {brand.Name}");
+            }
+
+            // Add New Brand
+            Brand newBrand = new Brand
+            {
+                Name = "Porsche"
+            };
+
+            brandManager.Add(newBrand);
+            Console.WriteLine("\nAdded a new brand:");
+
+            foreach (var brand in brandManager.GetAll())
+            {
+                Console.WriteLine($"{brand.Id} - {brand.Name}");
+            }
+
+            // Update a brand
+            Brand brandToUpdate = brandManager.GetById(2);
+
+            brandToUpdate.Name = "Updated BMW";
+            brandManager.Update(brandToUpdate);
+            Console.WriteLine("\nUpdated a brand:");
+
+            foreach (var brand in brandManager.GetAll())
+            {
+                Console.WriteLine($"{brand.Id} - {brand.Name}");
+            }
+
+         
+        }
+
+
     }
 }
