@@ -14,6 +14,18 @@ namespace MyApp
             //CarTest();
             //ColorTest();
             //BrandTest();
+            //CarDetailsTest();
+        }
+
+        private static void CarDetailsTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            Console.WriteLine("List of cars:");
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine($"{car.CarId} - {car.CarName}, Brand: {car.BrandName}, Color: {car.ColorName} Price: {car.DailyPrice}");
+            }
         }
 
         private static void CarTest()
