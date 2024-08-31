@@ -11,7 +11,7 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            //CarTest();
+            CarTest();
             //ColorTest();
             //BrandTest();
             //CarDetailsTest();
@@ -22,7 +22,7 @@ namespace MyApp
             CarManager carManager = new CarManager(new EfCarDal());
 
             Console.WriteLine("List of cars:");
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
                 Console.WriteLine($"{car.CarId} - {car.CarName}, Brand: {car.BrandName}, Color: {car.ColorName} Price: {car.DailyPrice}");
             }
@@ -33,7 +33,7 @@ namespace MyApp
             CarManager carManager = new CarManager(new EfCarDal());
 
             Console.WriteLine("List of cars:");
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine($"{car.Id} - {car.Description}, Model Year: {car.ModelYear}, Price: {car.DailyPrice}");
             }
@@ -45,35 +45,36 @@ namespace MyApp
                 ColorId = 2,
                 ModelYear = 2022,
                 DailyPrice = 500,
-                Description = "New Mercedes-Benz C-Class"
+                Description = "M"
             };
 
             carManager.Add(newCar);
             Console.WriteLine("\nAdded a new car:");
 
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine($"{car.Id} - {car.Description}, Model Year: {car.ModelYear}, Price: {car.DailyPrice}");
             }
 
             // Update a car
-            Car carToUpdate = carManager.GetById(10);
+            Car carToUpdate = carManager.GetById(20).Data;
 
-            carToUpdate.Description = "Updated Audi A2";
+            carToUpdate.Description = "Updated Audi A3";
             carToUpdate.DailyPrice = 275;
             carManager.Update(carToUpdate);
+
             Console.WriteLine("\nUpdated the first car:");
 
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine($"{car.Id} - {car.Description}, Model Year: {car.ModelYear}, Price: {car.DailyPrice}");
             }
 
             // Delete a car
-            carManager.Delete(carManager.GetById(10));
+            carManager.Delete(carManager.GetById(20).Data);
             Console.WriteLine("\nDeleted the second car:");
 
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine($"{car.Id} - {car.Description}, Model Year: {car.ModelYear}, Price: {car.DailyPrice}");
             }
@@ -83,7 +84,7 @@ namespace MyApp
             ColorManager colorManager = new ColorManager(new EfColorDal());
 
             Console.WriteLine("List of colors:");
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
                 Console.WriteLine($"{color.Id} - {color.Name}");
             }
@@ -97,28 +98,28 @@ namespace MyApp
             colorManager.Add(newColor);
             Console.WriteLine("\nAdded a new color:");
 
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
                 Console.WriteLine($"{color.Id} - {color.Name}");
             }
 
             // Update a color
-            Color colorToUpdate = colorManager.GetById(2);
+            Color colorToUpdate = colorManager.GetById(2).Data;
 
             colorToUpdate.Name = "Deep Blue";
             colorManager.Update(colorToUpdate);
             Console.WriteLine("\nUpdated a color:");
 
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
                 Console.WriteLine($"{color.Id} - {color.Name}");
             }
 
             // Delete a color
-            colorManager.Delete(colorManager.GetById(3));
+            colorManager.Delete(colorManager.GetById(3).Data);
             Console.WriteLine("\nDeleted a color:");
 
-            foreach (var color in colorManager.GetAll())
+            foreach (var color in colorManager.GetAll().Data)
             {
                 Console.WriteLine($"{color.Id} - {color.Name}");
             }
@@ -128,7 +129,7 @@ namespace MyApp
             BrandManager brandManager = new BrandManager(new EfBrandDal());
 
             Console.WriteLine("List of brands:");
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine($"{brand.Id} - {brand.Name}");
             }
@@ -142,19 +143,19 @@ namespace MyApp
             brandManager.Add(newBrand);
             Console.WriteLine("\nAdded a new brand:");
 
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine($"{brand.Id} - {brand.Name}");
             }
 
             // Update a brand
-            Brand brandToUpdate = brandManager.GetById(2);
+            Brand brandToUpdate = brandManager.GetById(2).Data;
 
             brandToUpdate.Name = "Updated BMW";
             brandManager.Update(brandToUpdate);
             Console.WriteLine("\nUpdated a brand:");
 
-            foreach (var brand in brandManager.GetAll())
+            foreach (var brand in brandManager.GetAll().Data)
             {
                 Console.WriteLine($"{brand.Id} - {brand.Name}");
             }

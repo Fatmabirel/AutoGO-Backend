@@ -1,51 +1,75 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
     public class ColorManager : IColorService
     {
-        IColorDal _colorDal;
+        private readonly IColorDal _colorDal;
 
         public ColorManager(IColorDal colorDal)
         {
             _colorDal = colorDal;
         }
 
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
             _colorDal.Add(color);
+            return new SuccessResult("Renk başarıyla eklendi.");
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
+            return new SuccessResult("Renk başarıyla silindi.");
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            var result = _colorDal.GetAll();
+            if (result.Count > 0)
+            {
+                return new SuccessDataResult<List<Color>>(result, "Renkler başarıyla getirildi.");
+            }
+            else
+            {
+                return new ErrorDataResult<List<Color>>("Renk bulunamadı.");
+            }
         }
 
-        public List<Color> GetByColorId(int id)
+        public IDataResult<List<Color>> GetByColorId(int id)
         {
-            return _colorDal.GetAll(c => c.Id == id);
+            var result = _colorDal.GetAll(c => c.Id == id);
+            if (result.Count > 0)
+            {
+                return new SuccessDataResult<List<Color>>(result, "Renkler başarıyla getirildi.");
+            }
+            else
+            {
+                return new ErrorDataResult<List<Color>>("Renk bulunamadı.");
+            }
         }
 
-        public Color GetById(int id)
+        public IDataResult<Color> GetById(int id)
         {
-            return _colorDal.Get(c=>c.Id == id);
+            var color = _colorDal.Get(c => c.Id == id);
+            if (color != null)
+            {
+                return new SuccessDataResult<Color>(color, "Renk başarıyla getirildi.");
+            }
+            else
+            {
+                return new ErrorDataResult<Color>("Renk bulunamadı.");
+            }
         }
 
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
             _colorDal.Update(color);
+            return new SuccessResult("Renk başarıyla güncellendi.");
         }
     }
 }
