@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,13 +19,13 @@ namespace Business.Concrete
         public IResult Add(Color color)
         {
             _colorDal.Add(color);
-            return new SuccessResult("Renk başarıyla eklendi.");
+            return new SuccessResult(Messages.ColorAdded);
         }
 
         public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            return new SuccessResult("Renk başarıyla silindi.");
+            return new SuccessResult(Messages.ColorDeleted);
         }
 
         public IDataResult<List<Color>> GetAll()
@@ -32,11 +33,11 @@ namespace Business.Concrete
             var result = _colorDal.GetAll();
             if (result.Count > 0)
             {
-                return new SuccessDataResult<List<Color>>(result, "Renkler başarıyla getirildi.");
+                return new SuccessDataResult<List<Color>>(result, Messages.ColorListed);
             }
             else
             {
-                return new ErrorDataResult<List<Color>>("Renk bulunamadı.");
+                return new ErrorDataResult<List<Color>>(Messages.ColorNotFound);
             }
         }
 
@@ -45,11 +46,11 @@ namespace Business.Concrete
             var result = _colorDal.GetAll(c => c.Id == id);
             if (result.Count > 0)
             {
-                return new SuccessDataResult<List<Color>>(result, "Renkler başarıyla getirildi.");
+                return new SuccessDataResult<List<Color>>(result, Messages.ColorListed);
             }
             else
             {
-                return new ErrorDataResult<List<Color>>("Renk bulunamadı.");
+                return new ErrorDataResult<List<Color>>(Messages.ColorNotFound);
             }
         }
 
@@ -58,18 +59,18 @@ namespace Business.Concrete
             var color = _colorDal.Get(c => c.Id == id);
             if (color != null)
             {
-                return new SuccessDataResult<Color>(color, "Renk başarıyla getirildi.");
+                return new SuccessDataResult<Color>(color, Messages.ColorFound);
             }
             else
             {
-                return new ErrorDataResult<Color>("Renk bulunamadı.");
+                return new ErrorDataResult<Color>(Messages.ColorNotFound);
             }
         }
 
         public IResult Update(Color color)
         {
             _colorDal.Update(color);
-            return new SuccessResult("Renk başarıyla güncellendi.");
+            return new SuccessResult(Messages.ColorUpdated);
         }
     }
 }

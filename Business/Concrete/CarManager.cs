@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -22,18 +23,18 @@ namespace Business.Concrete
             if (car.DailyPrice > 0 && car.Description.Length > 2)
             {
                 _carDal.Add(car);
-                return new SuccessResult("Araba başarıyla eklendi.");
+                return new SuccessResult(Messages.CarAdded); // Updated
             }
             else
             {
-                return new ErrorResult("Araba günlük fiyatı 0'dan büyük olmalıdır ve açıklama en az 2 karakter olmalıdır.");
+                return new ErrorResult(Messages.InvalidCarPrice + " ve " + Messages.InvalidCarDescription); // Updated
             }
         }
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult("Araba başarıyla silindi.");
+            return new SuccessResult(Messages.CarDeleted); // Updated
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -41,44 +42,42 @@ namespace Business.Concrete
             var result = _carDal.GetAll();
             if (result.Count > 0)
             {
-                return new SuccessDataResult<List<Car>>(result, "Arabalar başarıyla getirildi.");
+                return new SuccessDataResult<List<Car>>(result, Messages.CarListed); // Updated
             }
             else
             {
-                return new ErrorDataResult<List<Car>>("Araba bulunamadı.");
+                return new ErrorDataResult<List<Car>>(Messages.CarNotFound); // Updated
             }
         }
 
         public IDataResult<Car> GetById(int id)
         {
             var car = _carDal.Get(c => c.Id == id);
-            if (car != null)
+            if (car == null)
             {
-                return new SuccessDataResult<Car>(car, "Araba başarıyla getirildi.");
+                return new ErrorDataResult<Car>(Messages.CarNotFound);
             }
-            else
-            {
-                return new ErrorDataResult<Car>("Araba bulunamadı.");
-            }
+            return new SuccessDataResult<Car>(car, Messages.CarFound);
         }
+
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             var result = _carDal.GetCarDetails();
             if (result.Count > 0)
             {
-                return new SuccessDataResult<List<CarDetailDto>>(result, "Araba detayları başarıyla getirildi.");
+                return new SuccessDataResult<List<CarDetailDto>>(result, Messages.CarDetailsListed); // Updated
             }
             else
             {
-                return new ErrorDataResult<List<CarDetailDto>>("Araba detayları bulunamadı.");
+                return new ErrorDataResult<List<CarDetailDto>>(Messages.CarDetailsNotFound); // Updated
             }
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResult("Araba başarıyla güncellendi.");
+            return new SuccessResult(Messages.CarUpdated); // Updated
         }
     }
 }
