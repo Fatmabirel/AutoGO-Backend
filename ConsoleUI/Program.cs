@@ -11,10 +11,13 @@ namespace MyApp
     {
         static void Main(string[] args)
         {
-            CarTest();
+            //CarTest();
             //ColorTest();
             //BrandTest();
             //CarDetailsTest();
+            //UserTest();
+            //CustomerTest();
+            //RentalTest();
         }
 
         private static void CarDetailsTest()
@@ -27,7 +30,6 @@ namespace MyApp
                 Console.WriteLine($"{car.CarId} - {car.CarName}, Brand: {car.BrandName}, Color: {car.ColorName} Price: {car.DailyPrice}");
             }
         }
-
         private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
@@ -159,10 +161,146 @@ namespace MyApp
             {
                 Console.WriteLine($"{brand.Id} - {brand.Name}");
             }
-
          
         }
+        private static void UserTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
 
+            Console.WriteLine("List of users:");
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine($"{user.Id} - {user.FirstName} {user.LastName}, Email: {user.Email}");
+            }
+
+            // Add New User
+            User newUser = new User
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                Password = "password123"
+            };
+
+            userManager.Add(newUser);
+            Console.WriteLine("\nAdded a new user:");
+
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine($"{user.Id} - {user.FirstName} {user.LastName}, Email: {user.Email}");
+            }
+
+            // Update a user
+            User userToUpdate = userManager.GetById(1006).Data;
+
+            userToUpdate.FirstName = "Jane";
+            userToUpdate.LastName = "Smith";
+            userToUpdate.Email = "jane.smith@example.com";
+            userManager.Update(userToUpdate);
+
+            Console.WriteLine("\nUpdated a user:");
+
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine($"{user.Id} - {user.FirstName} {user.LastName}, Email: {user.Email}");
+            }
+
+            // Delete a user
+            userManager.Delete(userManager.GetById(1006).Data);
+            Console.WriteLine("\nDeleted a user:");
+
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine($"{user.Id} - {user.FirstName} {user.LastName}, Email: {user.Email}");
+            }
+        }
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+
+            // List of customers
+            Console.WriteLine("List of customers:");
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine($"{customer.UserId} - {customer.CompanyName}");
+            }
+
+            // Add New Customer
+            Customer newCustomer = new Customer
+            {
+                UserId = 3,
+                CompanyName = "Vodafone"
+            };
+
+            customerManager.Add(newCustomer);
+            Console.WriteLine("\nAdded a new customer:");
+
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine($"{customer.UserId} - {customer.CompanyName}");
+            }
+
+            // Update a customer
+            Customer customerToUpdate = customerManager.GetById(2).Data; // Adjust ID as needed
+
+            if (customerToUpdate != null)
+            {
+                customerToUpdate.UserId = 3;
+                customerToUpdate.CompanyName = "Avon";
+                customerManager.Update(customerToUpdate);
+
+                Console.WriteLine("\nUpdated a customer:");
+
+                foreach (var customer in customerManager.GetAll().Data)
+                {
+                    Console.WriteLine($"{customer.UserId} - {customer.CompanyName}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nCustomer to update not found.");
+            }
+
+            // Delete a customer
+            customerManager.Delete(customerManager.GetById(4).Data); // Adjust ID as needed
+            Console.WriteLine("\nDeleted a customer:");
+
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine($"{customer.UserId} - {customer.CompanyName}");
+            }
+        }
+        private static void RentalTest()
+        {
+            // Create an instance of RentalManager with a mock or real implementation of IRentalDal
+            RentalManager rentalManager = new RentalManager(new EfRentalDal(),new EfCarDal());
+
+            Console.WriteLine("List of rentals:");
+            foreach (var rental in rentalManager.GetAll().Data)
+            {
+                Console.WriteLine($"{rental.Id} - CarId: {rental.CarId}, CustomerId: {rental.CustomerId}, RentalDate: {rental.RentDate}, ReturnDate: {rental.ReturnDate}");
+            }
+
+            // Add New Rental
+            Rental newRental = new Rental
+            {
+                CarId = 7, // Assuming you have a car with ID 1
+                CustomerId = 5, // Assuming you have a customer with ID 2
+                RentDate = DateTime.Now
+            };
+
+            var addResult = rentalManager.Add(newRental);
+            Console.WriteLine("\n" + addResult.Message);
+
+            // List Rentals after Adding
+            Console.WriteLine("List of rentals after adding:");
+            foreach (var rental in rentalManager.GetAll().Data)
+            {
+                Console.WriteLine($"{rental.Id} - CarId: {rental.CarId}, CustomerId: {rental.CustomerId}, RentalDate: {rental.RentDate}, ReturnDate: {rental.ReturnDate}");
+            }
+
+            
+        }
 
     }
 }
