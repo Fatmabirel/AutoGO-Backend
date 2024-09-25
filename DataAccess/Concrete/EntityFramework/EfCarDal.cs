@@ -15,7 +15,7 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public List<CarDetailDto> GetCarDetails()
         {
-            using(RentACarContext context = new RentACarContext())
+            using (RentACarContext context = new RentACarContext())
             {
                 var result = from c in context.Cars
                              join b in context.Brands on c.BrandId equals b.Id
@@ -26,8 +26,13 @@ namespace DataAccess.Concrete.EntityFramework
                                  CarName = c.Description,
                                  BrandName = b.Name,
                                  ColorName = cl.Name,
-                                 DailyPrice = c.DailyPrice
+                                 DailyPrice = c.DailyPrice,
+                                 ModelYear = c.ModelYear,
+                                 CarImages = (from i in context.CarImages // Resimlerin join edilmesi
+                                                where i.CarId == c.Id
+                                        select i).ToList() // Her aracın resimlerini getiriyoruz
                              };
+
 
                 return result.ToList();
             }
