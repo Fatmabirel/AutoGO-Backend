@@ -56,6 +56,15 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(car, Messages.CarFound);
         }
 
+        public IDataResult<CarDetailDto> GetCarDetailById(int id)
+        {
+            var car = _carDal.GetCarDetailById(id);
+            if (car == null)
+            {
+                return new ErrorDataResult<CarDetailDto>(Messages.CarNotFound);
+            }
+            return new SuccessDataResult<CarDetailDto>(car, Messages.CarFound);
+        }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
@@ -76,5 +85,7 @@ namespace Business.Concrete
             _carDal.Update(car);
             return new SuccessResult(Messages.CarUpdated); // Updated
         }
+
+       
     }
 }
