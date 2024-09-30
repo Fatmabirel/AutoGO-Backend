@@ -37,6 +37,17 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("GetByCarId")]
+        public IActionResult GetByCarId(int carId)
+        {
+            var result = _rentalService.GetByCarId(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("Add")]
         public IActionResult Add(Rental rental)
         {
@@ -63,6 +74,17 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Rental rental)
         {
             var result = _rentalService.Delete(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("CheckCarAvailability")]
+        public IActionResult CheckCarAvailability(int carId, DateTime rentDate)
+        {
+            var result = _rentalService.CheckCarAvailability(carId, rentDate);
             if (result.Success)
             {
                 return Ok(result);

@@ -53,6 +53,16 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(rentals, Messages.RentalsListed);
         }
 
+        public IDataResult<Rental> GetByCarId(int carId)
+        {
+            var rental = _rentalDal.Get(r => r.CarId == carId);
+            if (rental == null)
+            {
+                return new ErrorDataResult<Rental>(Messages.RentalNotFound);
+            }
+            return new SuccessDataResult<Rental>(rental);
+        }
+
         public IDataResult<List<Rental>> GetByCustomerId(int customerId)
         {
             var rentals = _rentalDal.GetAll(r => r.CustomerId == customerId);
@@ -72,6 +82,28 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<Rental>(rental);
         }
+
+        public IDataResult<bool> CheckCarAvailability(int carId, DateTime rentDate)
+        {
+            // Gelen rentDate'in saat kısmını sıfırlıyoruz
+            rentDate = rentDate.Date;
+
+            // Araç için hala iade edilmemiş kiralamaları alıyoruz
+            var rentals = _rentalDal.GetAll(r => r.CarId == carId && r.ReturnDate == null);
+
+            // İade edilmemiş kiralamaları kontrol et
+            foreach (var rental in rentals)
+            {
+                // Eğer kiralama tarihi belirtilen tarihe eşit veya daha önceyse ve iade edilmemişse
+                if (rental.RentDate.Date == rentDate && (rental.ReturnDate == null || rentDate <= rental.ReturnDate?.Date))
+                {
+                    return new ErrorDataResult<bool>(false, Messages.CarIsAlreadyRented);
+                }
+            }
+
+            return new SuccessDataResult<bool>(true);
+        }
+
 
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
