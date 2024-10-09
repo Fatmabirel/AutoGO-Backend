@@ -1,5 +1,8 @@
-# Araba Kiralama Sistemi 🚗
-Bu proje Kodlama.io ile gerçekleştirilen Yazılımcı Geliştirme Kampı eğitiminin projesidir. 
+# AutoGO: Araç Kiralama Sistemi 🚗
+
+Bu proje, kullanıcıların kolaylıkla araç kiralayabileceği, çeşitli özellikler sunan kapsamlı bir araç kiralama sistemidir.
+
+<p>📌Projenin frontend kısmına <a href=https://github.com/Fatmabirel/RentACar-Frontend>buradan</a> ulaşabilirsiniz.</p>
 
 #### GEREKSİNİMLER 🛠
 - [x] Web projesi: 
